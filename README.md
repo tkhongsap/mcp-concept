@@ -1,26 +1,44 @@
-# NWS Weather MCP Server
+# MCP Server Collection
 
-A simple MCP (Model Context Protocol) server that provides weather forecast information using the **National Weather Service API** - completely free, no API keys required!
+A collection of custom MCP (Model Context Protocol) servers providing various tools and capabilities for AI assistants. This repository serves as a development workspace for building and testing multiple MCP servers.
 
 ## Overview
 
-This MCP server implements weather tools that allow AI models to fetch current weather conditions, forecasts, and alerts for US locations. It uses the official National Weather Service API and can be integrated with VS Code, Cursor, or Claude Desktop.
+This repository contains multiple MCP servers, each providing specialized tools and capabilities. The servers are organized in a modular structure, allowing for easy development, testing, and deployment of individual components.
 
-## Features
+## Available Servers
 
-- 🌤️ **Current weather conditions** (temperature, wind, conditions)
-- 📅 **7-day detailed forecasts** with 12-hour periods
-- 🚨 **Weather alerts** (severe weather warnings, watches, advisories)
-- 🌍 **US location support** (city names, coordinates)
-- 🆓 **Completely free** - no API keys required!
-- ⚡ **FastMCP framework** for improved performance
+### 🌤️ Weather Server
+**Location:** `servers/weather/`
 
-## Prerequisites
+Provides weather forecasting tools using the National Weather Service API - completely free, no API keys required!
+
+**Features:**
+- Current weather conditions and 7-day forecasts
+- Weather alerts and warnings
+- US location support (city names or coordinates)
+- Built with FastMCP framework
+
+**Tools:**
+- `get_weather()` - Get weather conditions and forecasts
+- `get_weather_alerts_only()` - Get active weather alerts
+
+### 🚧 Future Servers
+
+Additional MCP servers will be added to this collection:
+- Database/SQL query server
+- File system operations server  
+- API integration server
+- Custom business logic server
+
+## Quick Start
+
+### Prerequisites
 
 - Python 3.10 or higher
-- Internet connection (no API keys needed!)
+- Internet connection
 
-## Installation
+### Installation
 
 1. Clone this repository:
    ```bash
@@ -34,95 +52,99 @@ This MCP server implements weather tools that allow AI models to fetch current w
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install dependencies:
+3. Install global dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. (Optional) Set up environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-   The `.env` file is optional - no API keys required!
+### Running Individual Servers
 
-## Usage
-
-### Running the Server Standalone
+Each server can be run independently:
 
 ```bash
-python src/weather_server.py
+# Weather server
+python servers/weather/weather_server.py
+
+# Future servers
+python servers/[server-name]/[server-name]_server.py
 ```
 
-### Integration with Claude Desktop
+## Integration
 
-1. Open Claude Desktop settings
-2. Navigate to the MCP servers configuration
-3. Add the weather server configuration from `config/claude_desktop_config.json`
-4. Update the path to point to your installation directory
-5. Restart Claude Desktop
+### Claude Desktop Integration
 
-### Integration with VS Code/Cursor
+1. Update the configuration in `config/claude_desktop_config.json`
+2. Replace `/absolute/path/to/mcp-concept` with your actual installation path
+3. Add the configuration to Claude Desktop settings
+4. Restart Claude Desktop
 
-1. Install the MCP extension for VS Code/Cursor
-2. Add the configuration from `config/vscode_mcp_config.json` to your settings
-3. Reload the window to activate the server
+### VS Code/Cursor Integration
 
-## Available Tools
+1. Install the MCP extension
+2. Use the configuration from `config/vscode_mcp_config.json`
+3. Reload the window to activate servers
 
-### get_weather
+## Project Structure
 
-Fetches current weather conditions and forecast for a US location.
-
-**Parameters:**
-- `location` (required): City name with state (e.g., "Seattle, WA") or coordinates (e.g., "47.6062,-122.3321")
-- `include_alerts` (optional): Whether to include active weather alerts (default: false)
-
-**Example usage in AI assistant:**
 ```
-"Get the weather for Seattle, WA"
-"Show me the forecast for New York, NY with alerts"
-"What's the weather at coordinates 40.7128,-74.0060?"
-```
-
-### get_weather_alerts_only
-
-Fetches only active weather alerts for a US location.
-
-**Parameters:**
-- `location` (required): City name with state or coordinates
-
-**Example usage:**
-```
-"Get weather alerts for Miami, FL"
-"Are there any weather warnings for 25.7617,-80.1918?"
+mcp-concept/
+├── servers/                    # Individual MCP servers
+│   ├── weather/               # Weather forecasting server
+│   │   ├── weather_server.py  # Main server implementation
+│   │   ├── requirements.txt   # Server-specific dependencies
+│   │   ├── README.md         # Server documentation
+│   │   └── __init__.py       # Package initialization
+│   └── [future-servers]/     # Additional servers
+├── config/                   # IDE configuration templates
+│   ├── claude_desktop_config.json
+│   └── vscode_mcp_config.json
+├── requirements.txt          # Global dependencies
+├── CLAUDE.md                # Development instructions
+└── README.md               # This file
 ```
 
 ## Development
 
-### Project Structure
-```
-mcp-concept/
-├── src/
-│   └── weather_server.py    # Main server implementation
-├── config/                  # IDE configuration examples
-├── .env.example            # Environment template
-├── requirements.txt        # Python dependencies
-└── README.md              # This file
-```
+### Adding New Servers
 
-### Adding New Features
+1. Create a new directory under `servers/`
+2. Follow the established patterns from existing servers
+3. Use FastMCP framework with `@mcp.tool()` decorators
+4. Create server-specific documentation and requirements
+5. Update configuration files to include the new server
 
-To extend the server:
-1. Add new tools using the `@mcp.tool()` decorator
-2. Implement additional NWS API endpoints (observations, radar, etc.)
-3. Add support for more location formats
+### Best Practices
+
+- Each server should focus on a specific set of related capabilities
+- Use proper error handling and return meaningful error messages
+- Follow the existing code style and patterns
+- Include comprehensive documentation for each server
+- Test servers individually and in combination
+
+## Configuration Management
+
+The `config/` directory contains templates for integrating with various tools:
+
+- **claude_desktop_config.json**: For Claude Desktop integration
+- **vscode_mcp_config.json**: For VS Code/Cursor integration
+
+Update the absolute paths in these files to match your installation directory.
 
 ## Troubleshooting
 
-- **"Could not find coordinates for location"**: Ensure you're using US locations with state (e.g., "Denver, CO")
-- **"Location may be outside the US"**: The NWS API only covers US territories
-- **Connection errors**: Check your internet connection
-- **Rate limiting**: The NWS API has reasonable rate limits for normal usage
+- **Server won't start**: Check Python version (3.10+) and dependencies
+- **Configuration issues**: Verify absolute paths in config files
+- **Import errors**: Ensure virtual environment is activated
+- **Server-specific issues**: Check individual server documentation
+
+## Contributing
+
+When adding new servers:
+1. Follow the established directory structure
+2. Include proper documentation
+3. Add configuration examples
+4. Test integration with AI assistants
+5. Update this README with server information
 
 ## License
 

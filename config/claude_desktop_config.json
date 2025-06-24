@@ -2,7 +2,7 @@
   "mcpServers": {
     "nws-weather": {
       "command": "python",
-      "args": ["/absolute/path/to/mcp-concept/src/weather_server.py"],
+      "args": ["/absolute/path/to/mcp-concept/servers/weather/weather_server.py"],
       "env": {
         "LOG_LEVEL": "INFO"
       }

@@ -3,7 +3,7 @@
     {
       "name": "nws-weather-server",
       "command": "python3",
-      "args": ["${workspaceFolder}/src/weather_server.py"],
+      "args": ["${workspaceFolder}/servers/weather/weather_server.py"],
       "env": {
         "LOG_LEVEL": "INFO"
       },

@@ -22,10 +22,28 @@ build/
 *.swp
 *.swo
 *~
+# JetBrains IDEs
+*.iml
+*.ipr
+*.iws
+.idea/
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+# Emacs
+*~
+# Vim
+*.swp
+*.swo
+# VS Code
+.history/
 
 # OS
 .DS_Store
 Thumbs.db
+# Linux
+*~
+.nfs*
 
 # Logs
 logs/
@@ -42,3 +60,112 @@ coverage/
 # Temporary files
 *.tmp
 *.temp
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.old
+*.save
+*.sublime-backup
+
+# Mac system files
+.AppleDouble/
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows system files
+Desktop.ini
+$RECYCLE.BIN/
+
+# Docker
+.docker/
+Dockerfile*
+.dockerignore
+
+# CI/CD
+.ci/
+.gitlab-ci.yml
+.circleci/
+.travis.yml
+
+# Miscellaneous
+*.pid
+*.seed
+*.pid.lock
+*.log.*
+
+# Python (if ever used)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.envrc
+venv/
+ENV/
+
+# Go (if ever used)
+*.exe
+*.test
+*.out
+
+# Rust (if ever used)
+target/
+Cargo.lock
+
+# Java (if ever used)
+*.class
+*.jar
+*.war
+*.ear
+*.db
+
+# General archives
+*.zip
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+*.gz
+*.tgz
+*.xz
+*.lzma
+*.cab
+*.iso
+*.img
+*.msi
+*.msm
+*.msp
+
+# General images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.tiff
+*.ico
+*.svg
+
+# General videos
+*.mp4
+*.mov
+*.avi
+*.wmv
+*.flv
+*.mkv
+
+# General audio
+*.mp3
+*.wav
+*.ogg
+*.flac
+*.aac
+*.m4a
+
+# General PDFs
+*.pdf

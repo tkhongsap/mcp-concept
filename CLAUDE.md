@@ -11,7 +11,9 @@ This is a collection of MCP (Model Context Protocol) servers providing various t
 
 ## Development Commands
 
-**Install dependencies:** `pip install -r requirements.txt` (add `--break-system-packages` flag if required by system)
+**Install global dependencies:** `pip install -r requirements.txt` (add `--break-system-packages` flag if required by system)
+
+**Install server-specific dependencies:** `pip install -r servers/[server-name]/requirements.txt`
 
 **Run weather server:** `python servers/weather/weather_server.py`
 
@@ -20,6 +22,8 @@ This is a collection of MCP (Model Context Protocol) servers providing various t
 **Run any server:** `python servers/[server-name]/[server-name]_server.py`
 
 **Debug server:** Set `LOG_LEVEL=DEBUG` in environment or config files for verbose logging
+
+**Kill existing servers:** Always kill existing servers before starting new ones during development to avoid port conflicts
 
 ## Architecture
 
@@ -88,8 +92,11 @@ mcp-concept/
 
 ### Important Notes
 - Servers must be restarted after code changes for testing
-- Keep individual server files under 300 lines when possible
+- Keep individual server files under 300 lines when possible (weather server currently ~259 lines)
 - Each server should focus on a specific set of related capabilities
 - Always kill existing servers before starting new ones during development
-- Follow existing error handling and async patterns
+- Follow existing error handling and async patterns from weather server
 - Include comprehensive documentation for each server
+- MCP servers use stdio transport and require proper FastMCP initialization with `mcp.run()`
+- All external API calls should be async with proper timeout handling (30s default)
+- Configuration files in `config/` directory need absolute paths updated for new servers

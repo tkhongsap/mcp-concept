@@ -2,7 +2,7 @@
   "mcp.servers": [
     {
       "name": "nws-weather-server",
-      "command": "python",
+      "command": "python3",
       "args": ["${workspaceFolder}/src/weather_server.py"],
       "env": {
         "LOG_LEVEL": "INFO"

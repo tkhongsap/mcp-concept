@@ -11,19 +11,32 @@ This is a collection of MCP (Model Context Protocol) servers providing various t
 
 ## Development Commands
 
+### Environment Setup
+**Create virtual environment:** `python -m venv venv`
+
+**Activate virtual environment:** 
+- Linux/Mac: `source venv/bin/activate`
+- Windows: `venv\Scripts\activate`
+
 **Install global dependencies:** `pip install -r requirements.txt` (add `--break-system-packages` flag if required by system)
 
 **Install server-specific dependencies:** `pip install -r servers/[server-name]/requirements.txt`
 
+### Server Operations
 **Run weather server:** `python servers/weather/weather_server.py`
 
 **Test weather server startup:** `timeout 5s python servers/weather/weather_server.py` (kills after 5s to test initialization)
 
 **Run any server:** `python servers/[server-name]/[server-name]_server.py`
 
-**Debug server:** Set `LOG_LEVEL=DEBUG` in environment or config files for verbose logging
+**Debug server:** Set `LOG_LEVEL=DEBUG` in environment (use `.env` file based on `.env.example`) or config files for verbose logging
 
-**Kill existing servers:** Always kill existing servers before starting new ones during development to avoid port conflicts
+**Kill existing servers:** Always kill existing servers before starting new ones during development to avoid port conflicts - use `Ctrl+C` or `pkill -f python` if needed
+
+### Validation
+**Test server tools:** After starting a server, test its tools through Claude Desktop or VS Code to ensure proper functionality
+
+**Validate API responses:** Check that external API calls (NWS, OpenStreetMap) are working correctly
 
 ## Architecture
 
@@ -67,10 +80,18 @@ mcp-concept/
 ### Configuration
 
 **IDE Integration:** Configuration templates in `config/` directory:
-- `claude_desktop_config.json`: For Claude Desktop integration (update absolute path to point to `servers/weather/weather_server.py`)
-- `vscode_mcp_config.json`: For VS Code/Cursor integration (uses `${workspaceFolder}/servers/weather/weather_server.py`)
+- `claude_desktop_config.json`: For Claude Desktop integration (MUST update absolute path `/absolute/path/to/mcp-concept/servers/weather/weather_server.py` to actual installation path)
+- `vscode_mcp_config.json`: For VS Code/Cursor integration (uses relative path `${workspaceFolder}/servers/weather/weather_server.py`)
 
-**Environment:** Optional `.env` file (no API keys required), LOG_LEVEL configurable
+**Environment Configuration:** 
+- Copy `.env.example` to `.env` if needed (no API keys required for weather server)
+- Configure `LOG_LEVEL` (INFO, DEBUG, WARNING, ERROR) in `.env` file or config files
+- Environment variables take precedence over config file settings
+
+**Path Requirements:**
+- Claude Desktop configs require absolute paths
+- VS Code/Cursor configs can use workspace-relative paths with `${workspaceFolder}`
+- Always verify paths exist before testing integration
 
 ## Key Patterns
 
@@ -84,19 +105,28 @@ mcp-concept/
 
 ### Adding New Servers
 1. Create new directory under `servers/[server-name]/`
-2. Follow established patterns from weather server
-3. Use FastMCP framework with `@mcp.tool()` decorators
+2. Follow established patterns from weather server (`servers/weather/weather_server.py` as template)
+3. Use FastMCP framework with `@mcp.tool()` decorators for tool registration
 4. Create server-specific `requirements.txt`, `README.md`, and `__init__.py`
-5. Update config files to include new server
+5. Update both config files in `config/` directory to include new server
 6. Keep individual servers focused on specific capabilities
 
-### Important Notes
-- Servers must be restarted after code changes for testing
+### Development Workflow
+- **Code Changes:** Servers must be restarted after any code changes for testing
+- **Concurrent Development:** Can run multiple servers simultaneously, but ensure different ports/processes
+- **Server Lifecycle:** Always kill existing servers (`Ctrl+C`) before starting new ones during development
+- **Testing Cycle:** Start server → Test in Claude Desktop/VS Code → Stop server → Make changes → Repeat
+
+### Code Standards
 - Keep individual server files under 300 lines when possible (weather server currently ~259 lines)
-- Each server should focus on a specific set of related capabilities
-- Always kill existing servers before starting new ones during development
+- Each server should focus on a specific set of related capabilities  
 - Follow existing error handling and async patterns from weather server
-- Include comprehensive documentation for each server
 - MCP servers use stdio transport and require proper FastMCP initialization with `mcp.run()`
 - All external API calls should be async with proper timeout handling (30s default)
+- Return user-friendly error messages, not raw exceptions
+- Use consistent logging with proper log levels
+
+### Configuration Management
 - Configuration files in `config/` directory need absolute paths updated for new servers
+- Test configurations before committing by actually running the integration
+- Document any environment variables or special setup requirements
